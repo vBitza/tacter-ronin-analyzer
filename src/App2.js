@@ -16,8 +16,6 @@ function App() {
     >
       <div className="gradient"
         style={{
-          position: 'relative',
-          overflowY: 'auto',
           alignItems: 'center',
           display: 'flex',
           flexDirection: 'column',
@@ -47,7 +45,6 @@ function App() {
         </p>
         <Container
           style={{
-            position: 'relative',
             width: '50%',
             marginTop: '100px'
           }}
@@ -55,16 +52,12 @@ function App() {
           <Box
             sx={{
               display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              padding: '24px',
-              width: '864px',
-              minHeight: '240px',
-              background: '#212326',
-              border: '1px solid #565D64',
-              boxSizing: 'border-box',
-              boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.15)',
-              borderRadius: '8px',
+              borderRadius: '25px',
+              border: '1px solid white',
+              bgcolor: '#212326',
+              height: '300px',
+              width: '100%',
+              padding: '10px'
             }}
           >
             <RoninAnalyzer/>
