@@ -5,20 +5,27 @@ function drawChart (data, width, height, setCurrentData) {
 	const x = d3.scaleLinear().rangeRound([0, width]);
 	const y = d3.scaleLinear().rangeRound([0, height]);
 
-  // const colors = ["#FFFFFF", "#87CAFF", "#C4D4E1"];
+  // const colors = ["#FFFFFF", "#87CAFF"];
   // const colorRange = d3.scaleLinear.quantile().domain(colorDomain).range(colors);
   // const colorDomain = d3.extent(data.children.map((item) => {
-  //   return item.value / 10;
+    // return item.value / 10;
   // }));
 
   // const colorRange = d3.scaleLinear()
   //   .range(colors)
   //   .domain(colorDomain);
-
   // const colors = d3.interpolate('#87CAFF', '#C4D4E1');
-  const colors = d3.scaleSequential()
-    .interpolator(d3.interpolateInferno)
-    .domain([1,10])
+  const total = data.children.reduce((acc, current) => acc+=current.value, 0);
+
+  // const colors = d3.scaleSequential()
+  //   .interpolator(d3.interpolateDiscrete(['#FFFFFF', '#87CAFF']))
+    // .domain([1, 100]);
+  var colors  = d3.scaleLinear().domain([1, total * 2])
+    .range(['#C4D4E1', '#87CAFF']);
+
+  // const colors = d3.interpolateDiscrete(['#FFFFFF', '#87CAFF'])
+    // .domain([min, max])
+    // .domain([1,10])
 
   const svg = d3.create("svg")
 		.attr('viewBox', [0.5, -30.5, width, height])
@@ -36,7 +43,10 @@ function drawChart (data, width, height, setCurrentData) {
 
 	const treemap = (data) => d3.treemap()
     .tile(tile)(d3.hierarchy(data)
-    .sum(d => d.value)
+    .sum(d => {
+      console.log(d)
+      return d.value;
+    })
     .sort((a, b) => b.value - a.value));
 
 	const getName = (d) => d.ancestors().reverse().map(d => d.data.name).join("/")
@@ -119,7 +129,18 @@ function drawChart (data, width, height, setCurrentData) {
       .attr("clip-path", d => d.clipUid)
       .attr("font-weight", d => d === root ? "bold" : null)
       .selectAll("tspan")
-      .data(d => (d === root ? getName(d) : d.data.name).split(/(?=[A-Z][^A-Z])/g).concat(`${format(d.value)} SLP`))
+      .data(d => {
+        let value = d.value;
+
+        // For some reason the d3 mapping makes a weird sum for tiles that have childrens
+        // It basically adds the total value of all childrens twice therefore
+        // a quick fix was to divide the tiles based on childrens length
+        if (data.children.every((item) => item.children && item.children !== 0)) {
+          value = d.value / 2;
+        }
+
+        return (d === root ? getName(d) : d.data.name).split(/(?=[A-Z][^A-Z])/g).concat(`${format(value)} SLP`)
+      })
       .join("tspan")
       .attr("x", 3)
       .attr("y", (d, i, nodes) => `${(i === nodes.length - 1) * 0.3 + 1.1 + i * 0.9}em`)
