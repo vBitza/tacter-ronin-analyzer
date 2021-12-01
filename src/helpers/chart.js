@@ -49,7 +49,7 @@ function drawChart (data, width, height, setCurrentData) {
     })
     .sort((a, b) => b.value - a.value));
 
-	const getName = (d) => d.ancestors().reverse().map(d => d.data.name).join("/")
+	const getName = (d) => d.ancestors().reverse().map(d => d.data.name).join("/");
 
   let group = svg.append('g')
   	.call(render, treemap(data));
@@ -113,7 +113,7 @@ function drawChart (data, width, height, setCurrentData) {
       .on("click", (event, d) => d === root ? zoomout(root) : zoomin(d));
 
     node.append("title")
-      .text(d => `${getName(d)}\n${format(d.value)} SLP`);
+      .text(d => `${getName(d)}\n${format(d.value)} SLP\n${new Date(d.timestamp * 1000)}`);
 
     node.append("rect")
       .attr("id", d => (d.leafUid = uid("leaf")).id)
@@ -130,12 +130,17 @@ function drawChart (data, width, height, setCurrentData) {
       .attr("font-weight", d => d === root ? "bold" : null)
       .selectAll("tspan")
       .data(d => {
-        let value = d.value;
-
+        // let total = d.children.reduce((acc, current) => acc += current.value, 0);
+        // console.log(d);
         // For some reason the d3 mapping makes a weird sum for tiles that have childrens
         // It basically adds the total value of all childrens twice therefore
         // a quick fix was to divide the tiles based on childrens length
-        if (data.children.every((item) => item.children && item.children !== 0)) {
+        // console.log(d)
+        // if (d && d.children && d.children.every((item) => item.children && item.children.length !== 0)) {
+        //   value = d.value / 2;
+        // }
+        let value = d.value;
+        if (d && d.children && d.children.length !== 0) {
           value = d.value / 2;
         }
 
