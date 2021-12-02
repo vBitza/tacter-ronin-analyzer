@@ -9,6 +9,8 @@ function TransactionsHeatMap(props) {
 	const {
 		data,
 		setCurrentData,
+		managerAddress,
+		changeLoaderState,
 	} = props;
 
 	const [renderedGraph, setRenderedGraph] = useState('');
@@ -20,8 +22,9 @@ function TransactionsHeatMap(props) {
 	const height = 440;
 
 	useEffect(() => {
-		const drawChartSvg = drawChart(data, width, height, setCurrentData);
+		const drawChartSvg = drawChart(data, managerAddress, width, height, setCurrentData);
 		setChartSvg(drawChartSvg);
+		changeLoaderState(false);
 
 		if (chartRef.current.children[0]) {
 			chartRef.current.children[0].remove();
@@ -29,15 +32,7 @@ function TransactionsHeatMap(props) {
 		} else {
 			chartRef.current.appendChild(drawChartSvg);
 		}
-	}, [])
-	// const setChartSvg = () => {
-
-	// }
-
-  function replaceNode(svg) {
-  	let a = document.querySelectorAll('.chart')[0];
-  	// document.querySelectorAll('.chart')[0].appendChild(svg.node());
-  }
+	}, [data])
 
 	return (
 		<React.Fragment>
@@ -45,10 +40,12 @@ function TransactionsHeatMap(props) {
 				isChartReady
 					? <CircularProgress/>
 					:	<div
+						key={managerAddress}
 				   	className='chart'
 				   	ref={chartRef}
 				   	style={{
-				   		margin: '20px 0px',
+				   		marginTop: '10px',
+				   		marginBottom: '40px',
 				   		width: '100%',
 				   		height,
 				   		display: 'flex',

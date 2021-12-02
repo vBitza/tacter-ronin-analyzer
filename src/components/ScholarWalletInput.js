@@ -27,7 +27,7 @@ function ScholarWalletInput(props) {
 				top: '64px',
 				flex: 'none',
 				alignSelf: 'stretch',
-				margin: '16px 0px'
+				margin: '16px 0px',
 			}}
 		>
 			<Typography
@@ -68,6 +68,7 @@ function ScholarWalletInput(props) {
 					letterSpacing: '0.374px',
 					margin: '0px 16px',
 					padding: '12px 4px',
+					borderRadius: '8px',
 				}}
 				placeholder={'Ex: ronin:4b73609c29159effe89fa45fd57c22b4cf9d0e1f'}
 			  variant='filled'

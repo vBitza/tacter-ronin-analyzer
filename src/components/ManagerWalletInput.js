@@ -9,7 +9,7 @@ import { withStyles } from '@mui/styles';
 function ManagerWalletInput(props) {
 	const {
 		addressValidationError,
-		setScholarAddress,
+		setManagerAddress,
 		classes,
 		scholarAddress,
 	} = props;
@@ -63,7 +63,7 @@ function ManagerWalletInput(props) {
 							marginLeft: '2px',
 						}
 					}}
-					onChange={(e) => setScholarAddress(e.target.value)}
+					onChange={(e) => setManagerAddress(e.target.value)}
 					style={{
 						background: '#151719',
 						width: '80%',

@@ -3,7 +3,7 @@ import backgroundImage from './assets/axieBackground.jpg'
 import './App.css';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import RoninAnalyzer from './components/RoninAnalyzer'
+import RoninAnalyzer from './pages/RoninAnalyzer'
 
 function App() {
   return (
